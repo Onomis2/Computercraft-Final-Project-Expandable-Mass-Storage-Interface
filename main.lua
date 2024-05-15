@@ -1,4 +1,6 @@
 local running = true
+local sleepInt = false
+local sleepTime = 0
 SelectedMonitor = tostring(SelectedMonitor)
 shell.run("clear")
 print("Starting main...")
@@ -23,14 +25,26 @@ end
 end
 print(SelectedMonitor, "selected to display stored items.")
 print("Initialising monitor...")
-dofile "storedMonitor.lua"(SelectedMonitor)
-print("Succesfully initialised script! Looping it in 10 seconds!")
-sleep(10)
+print("Succesfully initialised script!")
+print("Set a script loop speed in seconds(less than 32):")
+
+while sleepInt == false do
+    sleepTime = tonumber(io.read())
+    if type(sleepTime) ~= "number" then
+    print("Invalid input. Please enter a number less than 32 to set loop speed in seconds:")  
+    else
+        sleepInt = true
+        break 
+    end 
+end
+print("Succesfully initialised code! Looping in "..sleepTime.." seconds!")
+sleep(sleepTime)
+
 while running == true do
     shell.run("clear")
     print("Looping script...")
     print("Initialising monitor...")
-    dofile("storedMonitor.lua")
-    print("Succesfully looped script! Looping again in 10 seconds!")
-    sleep(10)
+    dofile"storedMonitor.lua"(SelectedMonitor)
+    print("Succesfully looped script! Looping again in ",sleepTime, " seconds!")
+    sleep(sleepTime)
 end
