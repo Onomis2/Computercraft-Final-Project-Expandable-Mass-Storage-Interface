@@ -1,30 +1,51 @@
 local monitorStorage = peripheral.wrap("top")
 while true do
-local parse = 0
-local chests = dofile("findCentralStorage.lua")
-monitorStorage.clear()
-for i = 1,table.getn(chests) do
-    local chest = peripheral.wrap(chests[i])
-    for slot, item in pairs(chest.list()) do
-        local _, colonIndex = string.find(item.name, ":")
-        local itemName = item.name
-        if colonIndex then
-            itemName = string.sub(item.name, colonIndex + 1)
-        end
-        if item.count > 100000 then
-            itemCount = strsub(item.count, 3) .. M
-        elseif item.count > 100 then
-            itemCount = strsub(item.count, 3) .. K
-        end
-        itemCount = item.count
-        itemName = itemName:gsub("_", " ")
-        monitorStorage.setCursorPos(1,parse)
-        monitorStorage.setTextColor(1)
-        monitorStorage.write(itemCount)
-        monitorStorage.setCursorPos(5, parse)
-        monitorStorage.write(itemName)
-        parse = parse + 1
+    local monitorSize = (monitorStorage.getSize())
+    local parseY = 1
+    local parseX = 1
+    shell.run("clear")
+    print("Monitor Size: "..monitorSize)
+    print("Starting item count")
+    local items = dofile("countItems.lua")
+    print("Sorting counted items...")
+
+    local sortedItems = {}
+    for itemName, itemCount in pairs(items) do
+        table.insert(sortedItems, {name = itemName, count = itemCount})
     end
-end
-sleep(5)
+    table.sort(sortedItems, function(a, b)
+        return a.count > b.count
+    end)
+
+    print("Displaying sorted items...")
+    monitorStorage.clear()
+    for _, item in pairs(sortedItems) do
+        if item.count > 0 then
+            if item.count > 999999 then
+                item.count = math.floor(item.count / 1000000) .. "M"
+            elseif item.count > 999 then
+                item.count = math.floor(item.count / 1000) .. "K"
+            end
+            item.name = item.name:gsub("_", " ")
+            removeMinecraft = string.find(item.name, ":")
+            item.name = string.sub(item.name, removeMinecraft + 1)
+            if string.len(item.name) > (monitorSize / 2) - 4 then
+                item.name = string.sub(item.name, 1, 18) .. ".."
+            end
+            monitorStorage.setCursorPos(parseX, parseY)
+            monitorStorage.setTextColor(130)
+            monitorStorage.write(item.count)
+            monitorStorage.setTextColor(256)
+            monitorStorage.setCursorPos(parseX + 4, parseY)
+            monitorStorage.write(item.name)
+            if parseX == 1 then
+                parseX = 26
+            elseif parseX == 26 then
+                parseX = 1
+                parseY = parseY + 1
+            end
+        end
+    end
+    print("Success! retry in 5 seconds...")
+    sleep(5)
 end
