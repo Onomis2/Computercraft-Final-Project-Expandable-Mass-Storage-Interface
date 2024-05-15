@@ -1,12 +1,16 @@
-print("Do you immediatly want to run the code when the install is complete? (type true or false)")
-local run = io.read()
-if run == true then
-    wget run --placeholder
+print("Type \"run\" to immediatly execute code after installation")
+local run = tostring(io.read())
+print(run)
+if run == "run" then
+    print("PEEPEEPOOPOO")
+    shell.run(
+    "wget run https://github.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/main/install.lua")
     print("Succesfully installed. Running code in 5 seconds...")
     sleep(5)
     shell.run("main.lua")
 else
-    wget run --placeholder
+    print("WOMPWOMP")
+    shell.run(
+    "wget run https://github.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/main/install.lua")
     print("Succesfully installed. Run main.lua to execute the code.")
 end
-    
