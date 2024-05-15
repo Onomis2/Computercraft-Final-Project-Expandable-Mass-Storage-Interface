@@ -17,11 +17,9 @@ if monitors[2] == false then
 else
 print("Found monitors! Please select a monitor to display stored items from following found monitors:")
 for i,value in pairs(monitors) do
-    if value ~= false then
     print(value)
-    end
-    SelectedMonitor = tostring(io.read())
 end
+    SelectedMonitor = tostring(io.read())
 end
 print(SelectedMonitor, "selected to display stored items.")
 print("Initialising monitor...")

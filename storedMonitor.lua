@@ -44,5 +44,5 @@ return function(SelectedMonitor)
             end
         end
     end
-    print("Executed script succesfully!\n*")
+    print("Executed script succesfully!")
 end
