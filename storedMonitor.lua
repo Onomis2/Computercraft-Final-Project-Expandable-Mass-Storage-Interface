@@ -1,10 +1,9 @@
-local monitorStorage = peripheral.wrap("top")
-while true do
-    local monitorSize = (monitorStorage.getSize())
+return function(SelectedMonitor)
+    local monitorStorage = peripheral.wrap(SelectedMonitor)
+    print(monitorStorage)
+    local monitorSize = monitorStorage.getSize()
     local parseY = 1
     local parseX = 1
-    shell.run("clear")
-    print("Monitor Size: "..monitorSize)
     print("Starting item count")
     local items = dofile("countItems.lua")
     print("Sorting counted items...")
@@ -46,6 +45,5 @@ while true do
             end
         end
     end
-    print("Success! retry in 5 seconds...")
-    sleep(5)
+    print("Executed script succesfully!\n*")
 end
