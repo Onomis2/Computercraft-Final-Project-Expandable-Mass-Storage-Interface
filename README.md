@@ -6,7 +6,7 @@ Todo: description
 2. Connect a monitor and a chest to the computer.
 3. Run the code below on the computer:
 ```
-wget run https://github.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/new/main/install.lua
+wget run "https://raw.githubusercontent.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/main/install.lua
 ```
 4.Follow the installation wizard on the computer.
 
