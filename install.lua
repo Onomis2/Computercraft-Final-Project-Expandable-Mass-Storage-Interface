@@ -12,9 +12,11 @@ end
 print("Type \"run\" to immediatly execute code after installation")
 local run = tostring(io.read())
 if run == "run" then
+    Download()
     print("Succesfully installed. Running code in 5 seconds...")
     sleep(5)
     shell.run("main.lua")
 else
+    Download()
     print("Succesfully installed. Run main.lua to execute the code.")
 end
