@@ -2,7 +2,6 @@
 function InitialisePeripheral(file, peripheralName, occupied)
     local peripheralMatch = false
     local selectedPeripheral = ""
-    print("Finding", peripheralName.."s...")
     local peripherals = dofile(file)
     
     -- Spits error if there are no periferals found
@@ -15,9 +14,10 @@ function InitialisePeripheral(file, peripheralName, occupied)
     if peripherals[2] == false then
         print("Found 1", peripheralName, "! Using that", peripheralName, "to display stored items...")
         selectedPeripheral = peripherals[1]
+
     else
         -- If more than one peripheral is found, prompt the user to select one
-        print("Found multiple", peripheralName .. "s! Please select one to display stored items from the following found", peripheralName .. "s:")
+        print("Found multiple", peripheralName .. "s!\nPlease select one to display stored items from the following found", peripheralName .. "s:")
         while not peripheralMatch do
             for i, value in ipairs(peripherals) do
                 print(value)
@@ -53,9 +53,20 @@ print("Starting main...")
 
 local selectedMonitorStorage = InitialisePeripheral("findMonitors.lua", "monitor")
 
-local selectedMonitorRequest = InitialisePeripheral("findMonitors.lua", "monitor")
+local secondMonitor = dofile("findMonitors.lua")
+if secondMonitor[2] ~= false then
+    while inputMatch == false do
+        local selectedMonitorRequest = InitialisePeripheral("findMonitors.lua", "monitor")
+        if selectedMonitorRequest ~= selectedMonitorStorage then
+            inputMatch = true
+            break
+        else
+            print("Error assigning monitor. is this monitor already assigned?")
+        end
+    end
+end
 
-local selectedBarrelInput = InitialisePeripheral("findBarrel.lua", "input")
+local selectedBarrelInput = "minecraft:"..InitialisePeripheral("findBarrel.lua", "input")
 
 
 print("Succesfully initialised script!")
@@ -78,8 +89,8 @@ while running == true do
     print("Executing loop",loop.."...")
     print("Initialising monitor...")
     dofile"storedMonitor.lua"(selectedMonitorStorage)
-    --print("Checking for input items...")
-    --dofile"inputPrototype.lua"(selectedBarrelInput)
+    print("Checking for input items...")
+    dofile"inputPrototype.lua"(selectedBarrelInput)
     print("Succesfully looped script! Looping again in ",sleepTime, " seconds!")
     loop = loop + 1
     sleep(sleepTime)
