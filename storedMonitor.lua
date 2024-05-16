@@ -56,11 +56,12 @@ return function(selectedMonitorStorage)
             monitorStorage.setTextColor(256)
             monitorStorage.setCursorPos(parseX + 4, parseY)
             monitorStorage.write(name)
-            if parseX < monitorSize then
-                for i=CalculateRows(monitorSize),CalculateRows(monitorSize) do
+            monitorStorage.setCursorPos(parseX - 10,10)
+            monitorStorage.write(parseX)
+            if parseX < monitorSize-1 then
                     parseX = parseX + monitorSize/CalculateRows(monitorSize)
-                end
-            elseif parseX > CalculateRows(monitorSize)-1 then
+            end
+            if parseX > monitorSize then
                 parseX = 1
                 parseY = parseY + 1
             end
