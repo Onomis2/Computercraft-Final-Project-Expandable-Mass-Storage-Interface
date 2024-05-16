@@ -90,7 +90,7 @@ while running == true do
     print("Initialising monitor...")
     dofile"storedMonitor.lua"(selectedMonitorStorage)
     print("Checking for input items...")
-    dofile"inputPrototype.lua"(selectedBarrelInput)
+    dofile"input.lua"(selectedBarrelInput)
     print("Succesfully looped script! Looping again in ",sleepTime, " seconds!")
     loop = loop + 1
     sleep(sleepTime)
