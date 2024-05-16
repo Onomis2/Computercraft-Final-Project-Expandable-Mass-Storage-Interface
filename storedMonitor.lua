@@ -1,5 +1,5 @@
-return function(SelectedMonitor)
-    local monitorStorage = peripheral.wrap(SelectedMonitor)
+return function(selectedMonitorStorage)
+    local monitorStorage = peripheral.wrap(selectedMonitorStorage)
     local monitorSize = monitorStorage.getSize()
     local parseY = 1
     local parseX = 1

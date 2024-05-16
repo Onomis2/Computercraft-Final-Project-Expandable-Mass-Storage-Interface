@@ -1,28 +1,63 @@
+--Prompts user about which found peripheral to use
+function InitialisePeripheral(file, peripheralName, occupied)
+    local peripheralMatch = false
+    local selectedPeripheral = ""
+    print("Finding", peripheralName.."s...")
+    local peripherals = dofile(file)
+    
+    -- Spits error if there are no periferals found
+    if peripherals[1] == false then
+        print("Could not find any", peripheralName .. ". Please attach at least one", peripheralName, "to this PC.")
+        return
+    end
+
+    -- If only one peripheral is found, use it
+    if peripherals[2] == false then
+        print("Found 1", peripheralName, "! Using that", peripheralName, "to display stored items...")
+        selectedPeripheral = peripherals[1]
+    else
+        -- If more than one peripheral is found, prompt the user to select one
+        print("Found multiple", peripheralName .. "s! Please select one to display stored items from the following found", peripheralName .. "s:")
+        while not peripheralMatch do
+            for i, value in ipairs(peripherals) do
+                print(value)
+            end
+            selectedPeripheral = io.read()
+            for i, value in ipairs(peripherals) do
+                if selectedPeripheral == value then
+                    peripheralMatch = true
+                    break
+                end
+            end
+            if not peripheralMatch then
+                print("Error selecting", peripheralName .. ". Did you spell it right?")
+            end
+        end
+    end
+
+    print(selectedPeripheral, "selected.")
+    print("Initialised", peripheralName, "!")
+    return selectedPeripheral
+end
+
+local loop = 0
 local running = true
 local sleepInt = false
 local sleepTime = 0
-SelectedMonitor = tostring(SelectedMonitor)
+local output = false
+local barrelError = true
+local inputMatch = false
+local outputMatch = false
 shell.run("clear")
 print("Starting main...")
-print("Finding Monitors...")
-local monitors = dofile("findMonitors.lua")
-if monitors[1] == false then
-    print("Could not find monitor. Please attach at least 1 monitor to this pc.")
-    do return end
-end
 
-if monitors[2] == false then
-    print("Found 1 monitor! Using that monitor to display stored items...")
-    SelectedMonitor = monitors[1]
-else
-print("Found monitors! Please select a monitor to display stored items from following found monitors:")
-for i,value in pairs(monitors) do
-    print(value)
-end
-    SelectedMonitor = tostring(io.read())
-end
-print(SelectedMonitor, "selected to display stored items.")
-print("Initialising monitor...")
+local selectedMonitorStorage = InitialisePeripheral("findMonitors.lua", "monitor")
+
+local selectedMonitorRequest = InitialisePeripheral("findMonitors.lua", "monitor")
+
+local selectedBarrelInput = InitialisePeripheral("findBarrel.lua", "input")
+
+
 print("Succesfully initialised script!")
 print("Set a script loop speed in seconds(less than 32):")
 
@@ -40,9 +75,12 @@ sleep(sleepTime)
 
 while running == true do
     shell.run("clear")
-    print("Looping script...")
+    print("Executing loop",loop.."...")
     print("Initialising monitor...")
-    dofile"storedMonitor.lua"(SelectedMonitor)
+    dofile"storedMonitor.lua"(selectedMonitorStorage)
+    --print("Checking for input items...")
+    --dofile"inputPrototype.lua"(selectedBarrelInput)
     print("Succesfully looped script! Looping again in ",sleepTime, " seconds!")
+    loop = loop + 1
     sleep(sleepTime)
 end
