@@ -1,8 +1,37 @@
 return function(selectedMonitorStorage)
+
     local monitorStorage = peripheral.wrap(selectedMonitorStorage)
     local monitorSize = monitorStorage.getSize()
     local parseY = 1
     local parseX = 1
+    local removeMinecraft = ""
+
+    function CalculateRows(input)
+        if input > 0 then
+            return math.floor((input - 1) / 20) + 1
+        else
+            return 0
+        end
+    end
+
+    function MakeReadableNumber(count)
+        if count > 999999 then
+            count = math.floor(count / 1000000) .. "M"
+        elseif count > 999 then
+            count = math.floor(count / 1000) .. "K"
+        end
+        return count
+    end
+    function MakeReadableString(name,rows)
+        name = name:gsub("_", " ")
+        removeMinecraft = string.find(name, ":")
+        name = string.sub(name, removeMinecraft + 1)
+        if string.len(name) > (monitorSize/CalculateRows(monitorSize)) - 4 then
+            name = string.sub(name, 1, (monitorSize/CalculateRows(monitorSize))-6) .. ".."
+        end
+        return name
+    end
+
     print("Starting item count")
     local items = dofile("countItems.lua")
     print("Sorting counted items...")
@@ -19,26 +48,19 @@ return function(selectedMonitorStorage)
     monitorStorage.clear()
     for _, item in pairs(sortedItems) do
         if item.count > 0 then
-            if item.count > 999999 then
-                item.count = math.floor(item.count / 1000000) .. "M"
-            elseif item.count > 999 then
-                item.count = math.floor(item.count / 1000) .. "K"
-            end
-            item.name = item.name:gsub("_", " ")
-            removeMinecraft = string.find(item.name, ":")
-            item.name = string.sub(item.name, removeMinecraft + 1)
-            if string.len(item.name) > (monitorSize / 2) - 4 then
-                item.name = string.sub(item.name, 1, 18) .. ".."
-            end
+            count = MakeReadableNumber(item.count)
+            name = MakeReadableString(item.name)
             monitorStorage.setCursorPos(parseX, parseY)
             monitorStorage.setTextColor(130)
-            monitorStorage.write(item.count)
+            monitorStorage.write(count)
             monitorStorage.setTextColor(256)
             monitorStorage.setCursorPos(parseX + 4, parseY)
-            monitorStorage.write(item.name)
-            if parseX == 1 then
-                parseX = 26
-            elseif parseX == 26 then
+            monitorStorage.write(name)
+            if parseX < monitorSize then
+                for i=CalculateRows(monitorSize),CalculateRows(monitorSize) do
+                    parseX = parseX + monitorSize/CalculateRows(monitorSize)
+                end
+            elseif parseX > CalculateRows(monitorSize)-1 then
                 parseX = 1
                 parseY = parseY + 1
             end

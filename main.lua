@@ -86,6 +86,7 @@ sleep(sleepTime)
 
 while running == true do
     shell.run("clear")
+    print("OnomisOS 1.2")
     print("Executing loop",loop.."...")
     print("Initialising monitor...")
     dofile"storedMonitor.lua"(selectedMonitorStorage)
