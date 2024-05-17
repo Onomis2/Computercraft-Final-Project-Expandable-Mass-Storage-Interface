@@ -7,6 +7,7 @@ function Download()
     shell.run("wget https://raw.githubusercontent.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/main/install.lua")
     shell.run("wget https://raw.githubusercontent.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/main/items.json")
     shell.run("wget https://raw.githubusercontent.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/main/main.lua")
+    shell.run("wget https://raw.githubusercontent.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/main/progress.lua")
     shell.run("wget https://raw.githubusercontent.com/Onomis2/Computercraft-Final-Project-Expandable-Mass-Storage-Interface/main/storedMonitor.lua")
 end
 
