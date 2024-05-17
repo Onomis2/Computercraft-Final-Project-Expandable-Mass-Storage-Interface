@@ -1,5 +1,5 @@
 --Prompts user about which found peripheral to use
-function InitialisePeripheral(file, peripheralName, occupied)
+function InitialisePeripheral(file, peripheralName, customMessage)
     local peripheralMatch = false
     local selectedPeripheral = ""
     local peripherals = dofile(file)
@@ -17,7 +17,7 @@ function InitialisePeripheral(file, peripheralName, occupied)
 
     else
         -- If more than one peripheral is found, prompt the user to select one
-        print("Found multiple", peripheralName .. "s!\nPlease select one to display stored items from the following found", peripheralName .. "s:")
+        print("Found multiple", peripheralName .. "s!\n"..customMessage)
         while not peripheralMatch do
             for i, value in ipairs(peripherals) do
                 print(value)
@@ -51,13 +51,13 @@ local outputMatch = false
 shell.run("clear")
 print("Starting main...")
 
-local selectedMonitorStorage = InitialisePeripheral("findMonitors.lua", "monitor")
+local selectedMonitorStorage = InitialisePeripheral("findMonitors.lua", "monitor", "Select storage monitor:")
 
-local secondMonitor = dofile("findMonitors.lua")
-if secondMonitor[2] ~= false then
+local dataMonitor = dofile("findMonitors.lua")
+if dataMonitor[2] ~= false then
     while inputMatch == false do
-        local selectedMonitorRequest = InitialisePeripheral("findMonitors.lua", "monitor")
-        if selectedMonitorRequest ~= selectedMonitorStorage then
+        selectedMonitorData = InitialisePeripheral("findMonitors.lua", "monitor", "Select data monitor:")
+        if selectedMonitorData ~= selectedMonitorStorage then
             inputMatch = true
             break
         else
@@ -66,7 +66,7 @@ if secondMonitor[2] ~= false then
     end
 end
 
-local selectedBarrelInput = "minecraft:"..InitialisePeripheral("findBarrel.lua", "input")
+local selectedBarrelInput = "minecraft:"..InitialisePeripheral("findBarrel.lua", "input", "Select input barrel:")
 
 
 print("Succesfully initialised script!")
@@ -88,10 +88,12 @@ while running == true do
     shell.run("clear")
     print("OnomisOS 1.2")
     print("Executing loop",loop.."...")
-    print("Initialising monitor...")
-    dofile"storedMonitor.lua"(selectedMonitorStorage)
     print("Checking for input items...")
     dofile"input.lua"(selectedBarrelInput)
+    print("Initialising storage monitor...")
+    dofile"storedMonitor.lua"(selectedMonitorStorage)
+    print("Initialising progress bar...")
+    dofile"progress.lua"(selectedMonitorData)
     print("Succesfully looped script! Looping again in ",sleepTime, " seconds!")
     loop = loop + 1
     sleep(sleepTime)

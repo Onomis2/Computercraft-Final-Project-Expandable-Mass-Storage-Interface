@@ -15,7 +15,9 @@ return function(selectedMonitorStorage)
     end
 
     function MakeReadableNumber(count)
-        if count > 999999 then
+        if count > 999999999 then
+            count = math.floor(count / 1000000000) .. "G"
+        elseif count > 999999 then
             count = math.floor(count / 1000000) .. "M"
         elseif count > 999 then
             count = math.floor(count / 1000) .. "K"
