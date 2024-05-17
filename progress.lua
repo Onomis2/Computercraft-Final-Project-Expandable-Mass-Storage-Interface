@@ -9,9 +9,6 @@ return function(selectedMonitorRequest)
         end
     end
 
-    monitor.setTextScale(1)
-    monitor.setBackgroundColor(colors.black)
-
     if #modems == 0 then
         print("No modems found")
         return
@@ -101,9 +98,9 @@ return function(selectedMonitorRequest)
         return
     end
 
-    monitor.clear()
     monitor.setTextScale(0.5)
     monitor.setCursorPos(1, 1)
+    monitor.clearLine()
     monitor.setBackgroundColor(colors.black)
     monitor.write("Total items: " .. totalUsedItems)
     drawVerticalProgressBar(monitor, totalUsedItems, totalSlots)
